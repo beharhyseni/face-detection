@@ -162,33 +162,33 @@ def FindTemplate(pyramid, template, threshold):
                 
                 # THE FACE DETECTION RECTANGLE BOX
                 # Bottom line
-                x1 = M_x * 1/(0.75**photo_index)   - rescaled_x/2     # Rescale the image point x to match x size of the output image
-                y1 = M_y * 1/(0.75**photo_index)   + rescaled_y/2     # Rescale the image point y to match y size of the output image
-                x2 = M_x * 1/(0.75**photo_index)   + rescaled_x/2     # Rescale the image point x to match x size of the output image   
-                y2 = M_y * 1/(0.75**photo_index)   + rescaled_y/2     # Rescale the image point y to match y size of the output image             
-                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the bottom line of the rectangle with width = 2 (colored in red) 
+                x1 = M_x * 1/(0.75**photo_index)     - rescaled_x/2     # Rescale the image point x to match x size of the output image
+                y1 = M_y * 1/(0.75**photo_index)     + rescaled_y/2     # Rescale the image point y to match y size of the output image
+                x2 = M_x * 1/(0.75**photo_index)     + rescaled_x/2     # Rescale the image point x to match x size of the output image   
+                y2 = M_y * 1/(0.75**photo_index)     + rescaled_y/2     # Rescale the image point y to match y size of the output image             
+                draw.line((x1, y1, x2, y2), fill = "red", width = 2)    # Draw the bottom line of the rectangle with width = 2 (colored in red) 
                 
                 # Right line
-                x1 = M_x * 1/(0.75**photo_index)   + rescaled_x/2        
-                y1 = M_y * 1/(0.75**photo_index)   + rescaled_y/2     
-                x2 = M_x * 1/(0.75**photo_index)   + rescaled_x/2       
-                y2 = M_y * 1/(0.75**photo_index)   - rescaled_y/2                  
-                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the right line of the rectangle with width = 2 (colored in red) 
+                x1 = M_x * 1/(0.75**photo_index)     + rescaled_x/2        
+                y1 = M_y * 1/(0.75**photo_index)     + rescaled_y/2     
+                x2 = M_x * 1/(0.75**photo_index)     + rescaled_x/2       
+                y2 = M_y * 1/(0.75**photo_index)     - rescaled_y/2                  
+                draw.line((x1, y1, x2, y2), fill = "red", width = 2)    # Draw the right line of the rectangle with width = 2 (colored in red) 
                 
                 # Top line
-                x1 = M_x * 1/(0.75**photo_index)   - rescaled_x/2
-                y1 = M_y * 1/(0.75**photo_index)   - rescaled_y/2
-                x2 = M_x * 1/(0.75**photo_index)   + rescaled_x/2
-                y2 = M_y * 1/(0.75**photo_index)   - rescaled_y/2                  
-                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the top line of the rectangle with width = 2 (colored in red) 
+                x1 = M_x * 1/(0.75**photo_index)     - rescaled_x/2
+                y1 = M_y * 1/(0.75**photo_index)     - rescaled_y/2
+                x2 = M_x * 1/(0.75**photo_index)     + rescaled_x/2
+                y2 = M_y * 1/(0.75**photo_index)     - rescaled_y/2                  
+                draw.line((x1, y1, x2, y2), fill = "red", width = 2)    # Draw the top line of the rectangle with width = 2 (colored in red) 
                 
                 # Left Line
-                x1 = M_x * 1/(0.75**photo_index)   - rescaled_x/2 
-                y1 = M_y * 1/(0.75**photo_index)   + rescaled_y/2 
-                x2 = M_x * 1/(0.75**photo_index)   - rescaled_x/2 
-                y2 = M_y * 1/(0.75**photo_index)   - rescaled_y/2                        
-                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the bottom line of the rectangle with width = 2 (colored in red),
-                                                                      # after drawing this last line (left line), these four lines create a red rectangle
+                x1 = M_x * 1/(0.75**photo_index)     - rescaled_x/2 
+                y1 = M_y * 1/(0.75**photo_index)     + rescaled_y/2 
+                x2 = M_x * 1/(0.75**photo_index)     - rescaled_x/2 
+                y2 = M_y * 1/(0.75**photo_index)     - rescaled_y/2                         
+                draw.line((x1, y1, x2, y2), fill = "red", width = 2)    # Draw the bottom line of the rectangle with width = 2 (colored in red).
+                # After drawing this last line (left line), these four lines (bottom, right, top, and left) create a red rectangle
                 
                
     # Remove the binding of the draw from the local namespace
