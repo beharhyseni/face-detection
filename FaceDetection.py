@@ -5,7 +5,7 @@ from scipy import signal
 import ncc
 
 
-# IMAGES' PATHS CONSTANTS
+# IMAGES' PATHS 
 STUDENTS_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/students.jpg'
 JUDY_BATS_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/judybats.jpg'
 FANS_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/fans.jpg'
@@ -16,6 +16,8 @@ TEMPLATE_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representati
 
 
 
+# *** Create a pyramid for the given image and minsize.
+# *** It will return a list of the original image as well as all scaled down images down to the minsize ***
 
 def MakePyramid(image, minsize):
     
@@ -38,12 +40,9 @@ def MakePyramid(image, minsize):
             minimum_size = min(x,y)
     return pyramid_list
         
-
-# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
-pyramid = MakePyramid(JUDY_BATS_IMAGE, 20)
-
         
-# Calculates the width of the total pyramid image (the sum of the width of every image in the pyramid)
+# *** Calculates the width of the total pyramid image (the sum of the width of every image in the pyramid) ***
+
 def pyramid_width(pyramid):
     
     # Initialize the width variable
@@ -56,7 +55,8 @@ def pyramid_width(pyramid):
     # Return the width value
     return width
             
-# Calculates the height of the pyramid
+# *** Calculates the height of the pyramid ***
+
 def pyramid_height(pyramid):
     
     # Pyramid's height is equal to the first image (original) inside of it since this image has the biggest height out of all scaled images.
@@ -65,6 +65,8 @@ def pyramid_height(pyramid):
     # Return the height value 
     return height
 
+
+# *** Join all the images in the pyramid into one horizontal image ***
 
 def ShowPyramid(pyramid):
     
@@ -81,13 +83,22 @@ def ShowPyramid(pyramid):
     temp_width = 0
     temp_height = 0
     
+    # Iterate through index of every element in the pyramid list
     for i in range(0, len(pyramid)):
                
+        # Paste (add) the pyramid image of the current iteration into the grayscale image at the right position
+        # which is kept track using temp_width and temp_width      
         image.paste(pyramid[i],(temp_width, temp_height))
+        
+        # Update temp_width to point to the next available position in the horizontal image 
         temp_width += pyramid[i].size[0]
         
+    # Return the single image containing all images in the pyramid (forming a horizontal image)
     return image
 
+
+# *** Match the given template to the given pyramid with the given threshold, then find and mark all locations in 
+# *** the pyramid at which the normalized cross correlation (NCC) of the template with the image is above the threshold. ***
 
 def FindTemplate(pyramid, template, threshold):
     
@@ -151,73 +162,47 @@ def FindTemplate(pyramid, template, threshold):
                 
                 # THE FACE DETECTION RECTANGLE BOX
                 # Bottom line
-                x1 = M_x        - rescaled_x  
-                y1 = M_y        + rescaled_y   
-                x2 = M_x        + rescaled_x        
-                y2 = M_y        + rescaled_y               
-                draw.line((x1,y1,x2,y2),fill="red",width=2)
+                x1 = M_x * 1/(0.75**photo_index)   - rescaled_x/2     # Rescale the image point x to match x size of the output image
+                y1 = M_y * 1/(0.75**photo_index)   + rescaled_y/2     # Rescale the image point y to match y size of the output image
+                x2 = M_x * 1/(0.75**photo_index)   + rescaled_x/2     # Rescale the image point x to match x size of the output image   
+                y2 = M_y * 1/(0.75**photo_index)   + rescaled_y/2     # Rescale the image point y to match y size of the output image             
+                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the bottom line of the rectangle with width = 2 (colored in red) 
                 
                 # Right line
-                x1 = M_x        + rescaled_x        
-                y1 = M_y        + rescaled_y     
-                x2 = M_x        + rescaled_x       
-                y2 = M_y        - rescaled_y                  
-                draw.line((x1,y1,x2,y2),fill="red",width=2)
+                x1 = M_x * 1/(0.75**photo_index)   + rescaled_x/2        
+                y1 = M_y * 1/(0.75**photo_index)   + rescaled_y/2     
+                x2 = M_x * 1/(0.75**photo_index)   + rescaled_x/2       
+                y2 = M_y * 1/(0.75**photo_index)   - rescaled_y/2                  
+                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the right line of the rectangle with width = 2 (colored in red) 
                 
                 # Top line
-                x1 = M_x        - rescaled_x
-                y1 = M_y        - rescaled_y
-                x2 = M_x        + rescaled_x
-                y2 = M_y        - rescaled_y                  
-                draw.line((x1,y1,x2,y2),fill="red",width=2)
+                x1 = M_x * 1/(0.75**photo_index)   - rescaled_x/2
+                y1 = M_y * 1/(0.75**photo_index)   - rescaled_y/2
+                x2 = M_x * 1/(0.75**photo_index)   + rescaled_x/2
+                y2 = M_y * 1/(0.75**photo_index)   - rescaled_y/2                  
+                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the top line of the rectangle with width = 2 (colored in red) 
                 
                 # Left Line
-                x1 = M_x        - rescaled_x 
-                y1 = M_y        + rescaled_y 
-                x2 = M_x        - rescaled_x 
-                y2 = M_y        - rescaled_y                        
-                draw.line((x1,y1,x2,y2),fill="red",width=2)
+                x1 = M_x * 1/(0.75**photo_index)   - rescaled_x/2 
+                y1 = M_y * 1/(0.75**photo_index)   + rescaled_y/2 
+                x2 = M_x * 1/(0.75**photo_index)   - rescaled_x/2 
+                y2 = M_y * 1/(0.75**photo_index)   - rescaled_y/2                        
+                draw.line((x1,y1,x2,y2),fill="red",width=2)           # Draw the bottom line of the rectangle with width = 2 (colored in red),
+                                                                      # after drawing this last line (left line), these four lines create a red rectangle
                 
-                
-                
-                
-                
-                # # SHOW THE CENTER OF X and Y
-                # x1 = M_x          
-                # y1 = M_y        
-                # x2 = M_x        
-                # y2 = M_y        
-                # draw.line((x1,y1,x2,y2),fill="blue",width=10)
-                # 
-                # # Right line
-                # x1 = M_x                
-                # y1 = M_y       
-                # x2 = M_x        
-                # y2 = M_y        
-                # draw.line((x1,y1,x2,y2),fill="blue",width=10)
-                # 
-                # # Top line
-                # x1 = M_x        
-                # y1 = M_y        
-                # x2 = M_x        
-                # y2 = M_y        
-                # draw.line((x1,y1,x2,y2),fill="blue",width=10)
-                # 
-                # # Left Line
-                # x1 = M_x        
-                # y1 = M_y        
-                # x2 = M_x        
-                # y2 = M_y        
-                # draw.line((x1,y1,x2,y2),fill="blue",width=10)
-                            
+               
+    # Remove the binding of the draw from the local namespace
+    del draw  
+              
     # Return the final image which contains red rectangles on the detected faces    
     return image
     
    
-    
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(FAMILY_IMAGE, 20)
+
 # Perform the FindTemplate function in the given pyramid and template image with the given threshold
-FindTemplate(pyramid, TEMPLATE_IMAGE, 0.6).show()
-    
+FindTemplate(pyramid, TEMPLATE_IMAGE, 0.545).show()
     
     
 
