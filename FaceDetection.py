@@ -11,6 +11,7 @@ JUDY_BATS_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representat
 FANS_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/fans.jpg'
 TREE_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/tree.jpg'
 FAMILY_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/family.jpg'
+SPORTS_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/sports.jpg'
 TEMPLATE_IMAGE = 'C:/Users/behar/Desktop/Face-Detection-in-a-Scaled-Representation/libs/faces/template.jpg'
 
 
@@ -27,17 +28,31 @@ def MakePyramid(image, minsize):
     # Initialize the pyramid_list (to be used for storing scaled images' arrays)
     pyramid_list = []
     
+    # Open the original image (make available for access and modification in the code)
     with Image.open(image) as original_image:
+        
+        # Set the x to be the row size and y to be the column size of the image
         x, y = original_image.size
+        
+        # set minimum_size to be the minimum integer of x and y
         minimum_size = min(int(x),int(y))
+        
+        # Add the original size image to the pyramid list
         pyramid_list.append(original_image.resize((x,y), Image.BICUBIC))
         
+        # Rescale x and y of the image (by 0.75) after each iteration 
         while minimum_size>minsize:
             x = int(x * 0.75)
             y = int(y * 0.75)
              
+            # Add the rescaled image of the current iteration into the pyramid list
             pyramid_list.append(original_image.resize((x,y), Image.BICUBIC))
+            
+            # Set the minimum_size to be the minimum integer of x and y
             minimum_size = min(x,y)
+            
+    # Return the pyramid list which contains all images binded together (arrays of images), 
+    # where each image is rescaled by 0.75 (compared to the previous image) until an image reaches the minimum_size  
     return pyramid_list
         
         
@@ -197,13 +212,81 @@ def FindTemplate(pyramid, template, threshold):
     # Return the final image which contains red rectangles on the detected faces    
     return image
     
-   
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+# The functions (with comments) I used to achieve the desired results, including showing pyramid and final 6 images.
+
+  
+# Generating a pyramid image with the given image
+
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(JUDY_BATS_IMAGE, 20)
+
+# Show the pyramid (horizontal image) for the given image
+ShowPyramid(pyramid).show()
+
+
+
+
+# Generating the final 6 images with equal error rate
+
+# FINAL THRESHOLD
+threshold = 0.573
+
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(STUDENTS_IMAGE, 20)
+
+# Perform the FindTemplate function in the given pyramid and template image with the given threshold
+FindTemplate(pyramid, TEMPLATE_IMAGE, threshold).show()
+    
+    
+    
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(JUDY_BATS_IMAGE, 20)
+
+# Perform the FindTemplate function in the given pyramid and template image with the given threshold
+FindTemplate(pyramid, TEMPLATE_IMAGE, threshold).show()
+
+
+
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(FANS_IMAGE, 20)
+
+# Perform the FindTemplate function in the given pyramid and template image with the given threshold
+FindTemplate(pyramid, TEMPLATE_IMAGE, threshold).show()
+
+
+
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(TREE_IMAGE, 20)
+
+# Perform the FindTemplate function in the given pyramid and template image with the given threshold
+FindTemplate(pyramid, TEMPLATE_IMAGE, threshold).show()
+
+
+
 # Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
 pyramid = MakePyramid(FAMILY_IMAGE, 20)
 
 # Perform the FindTemplate function in the given pyramid and template image with the given threshold
-FindTemplate(pyramid, TEMPLATE_IMAGE, 0.545).show()
-    
-    
+FindTemplate(pyramid, TEMPLATE_IMAGE, threshold).show()
+
+
+
+# Create the pyramid of the given the given image and minimum size (min_size has to be larger than the TEMPLATE_WIDTH)
+pyramid = MakePyramid(SPORTS_IMAGE, 20)
+
+# Perform the FindTemplate function in the given pyramid and template image with the given threshold
+FindTemplate(pyramid, TEMPLATE_IMAGE, threshold).show()
 
 
