@@ -1,2 +1,2 @@
-# Face-Detection-in-a-Scaled-Representation
+# Face Detection in a Scaled Representation
 Computer Vision
